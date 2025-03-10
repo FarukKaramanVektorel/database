@@ -1,0 +1,521 @@
+USE [master]
+GO
+/****** Object:  Database [okul_sistemi]    Script Date: 10.03.2025 14:59:42 ******/
+CREATE DATABASE [okul_sistemi]
+ 
+GO
+ALTER DATABASE [okul_sistemi] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [okul_sistemi].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [okul_sistemi] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [okul_sistemi] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [okul_sistemi] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [okul_sistemi] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [okul_sistemi] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET RECOVERY FULL 
+GO
+ALTER DATABASE [okul_sistemi] SET  MULTI_USER 
+GO
+ALTER DATABASE [okul_sistemi] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [okul_sistemi] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [okul_sistemi] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [okul_sistemi] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [okul_sistemi] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [okul_sistemi] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'okul_sistemi', N'ON'
+GO
+ALTER DATABASE [okul_sistemi] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [okul_sistemi] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [okul_sistemi]
+GO
+/****** Object:  Table [dbo].[dersler]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dersler](
+	[ders_id] [int] IDENTITY(1,1) NOT NULL,
+	[ders_adi] [varchar](100) NULL,
+	[ogretmen_id] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ders_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[klup]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[klup](
+	[klup_id] [int] IDENTITY(1,1) NOT NULL,
+	[klup_adi] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[klup_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ogrenci_ders]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ogrenci_ders](
+	[ogrenci_id] [int] NOT NULL,
+	[ders_id] [int] NOT NULL,
+	[yil] [int] NULL,
+	[donem] [varchar](10) NULL,
+ CONSTRAINT [PK_ogrenci_ders] PRIMARY KEY CLUSTERED 
+(
+	[ogrenci_id] ASC,
+	[ders_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ogrenci_klup]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ogrenci_klup](
+	[ogrenci_id] [int] IDENTITY(1,1) NOT NULL,
+	[klup_id] [int] NULL,
+	[katilim_tarihi] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ogrenci_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ogrenci_sinif]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ogrenci_sinif](
+	[ogrenci_id] [int] IDENTITY(1,1) NOT NULL,
+	[sinif_id] [int] NULL,
+	[yil] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ogrenci_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ogrenciler]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ogrenciler](
+	[ogrenci_id] [int] IDENTITY(1,1) NOT NULL,
+	[ad] [varchar](100) NULL,
+	[soyad] [varchar](100) NULL,
+	[dogum_tarihi] [date] NULL,
+	[cinsiyet] [char](1) NULL,
+	[adres] [varchar](255) NULL,
+	[telefon] [varchar](15) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ogrenci_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ogretmenler]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ogretmenler](
+	[ogretmen_id] [int] IDENTITY(1,1) NOT NULL,
+	[ad] [varchar](100) NULL,
+	[soyad] [varchar](100) NULL,
+	[bolum] [varchar](100) NULL,
+	[dogum_tarihi] [date] NULL,
+	[telefon] [varchar](15) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ogretmen_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[sinav_sonuclari]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[sinav_sonuclari](
+	[ogrenci_id] [int] IDENTITY(1,1) NOT NULL,
+	[sinav_id] [int] NULL,
+	[puan] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ogrenci_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[sinavlar]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[sinavlar](
+	[sinav_id] [int] IDENTITY(1,1) NOT NULL,
+	[sinav_adi] [varchar](100) NULL,
+	[ders_id] [int] NULL,
+	[sinav_tarihi] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[sinav_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[siniflar]    Script Date: 10.03.2025 14:59:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[siniflar](
+	[sinif_id] [int] IDENTITY(1,1) NOT NULL,
+	[sinif_adi] [varchar](50) NULL,
+	[kapasite] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[sinif_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[dersler] ON 
+
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (1, N'Matematik', 1)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (2, N'Türkçe', 2)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (3, N'Fen Bilgisi', 3)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (4, N'Sosyal Bilgiler', 4)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (5, N'Beden Eğitimi', 5)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (6, N'Kimya', 6)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (7, N'Fizik', 7)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (8, N'Coğrafya', 8)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (9, N'Müzik', 9)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (10, N'Resim', 10)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (11, N'Edebiyat', 4)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (12, N'Biyoloji', 2)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (13, N'Tarih', 9)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (14, N'Araba Kullanma', 5)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (15, N'Drama', 8)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (16, N'Astronomi', 10)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (17, N'Felsefe', 6)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (18, N'Geometri', 1)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (19, N'Kimya Deneyleri', 2)
+INSERT [dbo].[dersler] ([ders_id], [ders_adi], [ogretmen_id]) VALUES (20, N'Bilgisayar Bilimleri', 7)
+SET IDENTITY_INSERT [dbo].[dersler] OFF
+GO
+SET IDENTITY_INSERT [dbo].[klup] ON 
+
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (1, N'Satranç')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (2, N'Futbol')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (3, N'Basketbol')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (4, N'Voleybol')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (5, N'Tiyatro')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (6, N'Müzik')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (7, N'Resim')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (8, N'Gönüllü Hizmet')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (9, N'Sinema')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (10, N'Dans')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (11, N'Yüzme')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (12, N'Tiyatro')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (13, N'Fotoğrafçılık')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (14, N'Bilim Kulübü')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (15, N'Teknoloji Kulübü')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (16, N'Koro')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (17, N'Kodlama')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (18, N'Tartışma')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (19, N'Çevre Kulübü')
+INSERT [dbo].[klup] ([klup_id], [klup_adi]) VALUES (20, N'Matematik Kulübü')
+SET IDENTITY_INSERT [dbo].[klup] OFF
+GO
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (1, 1, 2025, N'Güz')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (2, 2, 2025, N'Güz')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (3, 3, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (4, 4, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (5, 5, 2025, N'Güz')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (6, 6, 2025, N'Güz')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (7, 7, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (8, 8, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (9, 9, 2025, N'Güz')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (10, 10, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (11, 3, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (12, 4, 2025, N'Güz')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (13, 5, 2025, N'Güz')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (14, 6, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (15, 7, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (16, 8, 2025, N'Güz')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (17, 9, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (18, 10, 2025, N'Güz')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (19, 1, 2025, N'Bahar')
+INSERT [dbo].[ogrenci_ders] ([ogrenci_id], [ders_id], [yil], [donem]) VALUES (20, 2, 2025, N'Güz')
+GO
+SET IDENTITY_INSERT [dbo].[ogrenci_klup] ON 
+
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (1, 1, CAST(N'2024-10-01' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (2, 2, CAST(N'2024-09-15' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (3, 3, CAST(N'2024-10-10' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (4, 4, CAST(N'2024-08-20' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (5, 5, CAST(N'2024-09-05' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (6, 6, CAST(N'2024-09-25' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (7, 7, CAST(N'2024-08-15' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (8, 8, CAST(N'2024-10-05' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (9, 9, CAST(N'2024-10-12' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (10, 10, CAST(N'2024-09-30' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (11, 1, CAST(N'2024-09-01' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (12, 2, CAST(N'2024-10-01' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (13, 3, CAST(N'2024-09-15' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (14, 4, CAST(N'2024-09-25' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (15, 5, CAST(N'2024-10-10' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (16, 6, CAST(N'2024-09-05' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (17, 7, CAST(N'2024-10-20' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (18, 8, CAST(N'2024-08-25' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (19, 9, CAST(N'2024-09-30' AS Date))
+INSERT [dbo].[ogrenci_klup] ([ogrenci_id], [klup_id], [katilim_tarihi]) VALUES (20, 10, CAST(N'2024-10-15' AS Date))
+SET IDENTITY_INSERT [dbo].[ogrenci_klup] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ogrenci_sinif] ON 
+
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (2, 2, 2025)
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (3, 4, 2025)
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (4, 6, 2025)
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (5, 3, 2025)
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (6, 5, 2025)
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (7, 7, 2025)
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (8, 1, 2025)
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (9, 9, 2025)
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (10, 8, 2025)
+INSERT [dbo].[ogrenci_sinif] ([ogrenci_id], [sinif_id], [yil]) VALUES (11, 10, 2025)
+SET IDENTITY_INSERT [dbo].[ogrenci_sinif] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ogrenciler] ON 
+
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (1, N'Ahmet', N'Yılmaz', CAST(N'2005-05-15' AS Date), N'E', N'İstanbul, Şişli', N'05551234567')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (2, N'Ayşe', N'Kara', CAST(N'2004-03-22' AS Date), N'K', N'Ankara, Çankaya', N'05552345678')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (3, N'Mehmet', N'Demir', CAST(N'2005-07-10' AS Date), N'E', N'İzmir, Karşıyaka', N'05553456789')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (4, N'Elif', N'Güzel', CAST(N'2006-01-25' AS Date), N'K', N'Bursa, Osmangazi', N'05554567890')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (5, N'Murat', N'Çelik', CAST(N'2004-12-05' AS Date), N'E', N'Adana, Seyhan', N'05555678901')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (6, N'Fatma', N'Aksoy', CAST(N'2005-09-18' AS Date), N'K', N'Eskişehir, Tepebaşı', N'05556789012')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (7, N'Okan', N'Turan', CAST(N'2006-05-30' AS Date), N'E', N'Antalya, Muratpaşa', N'05557890123')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (8, N'Zeynep', N'Demirtaş', CAST(N'2004-11-09' AS Date), N'K', N'Konya, Meram', N'05558901234')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (9, N'Berk', N'Yıldız', CAST(N'2005-08-20' AS Date), N'E', N'Samsun, Atakum', N'05559012345')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (10, N'İrem', N'Kılıç', CAST(N'2006-02-14' AS Date), N'K', N'Trabzon, Ortahisar', N'05550123456')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (11, N'Mert', N'Tuna', CAST(N'2005-02-18' AS Date), N'E', N'Kayseri, Melikgazi', N'05551234567')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (12, N'Selin', N'Öztürk', CAST(N'2005-06-03' AS Date), N'K', N'Mersin, Toroslar', N'05552345678')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (13, N'Kaan', N'Kurt', CAST(N'2006-08-15' AS Date), N'E', N'Sakarya, Adapazarı', N'05553456789')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (14, N'Duru', N'Can', CAST(N'2004-11-30' AS Date), N'K', N'Çorum, Merkez', N'05554567890')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (15, N'Baran', N'Gök', CAST(N'2006-03-22' AS Date), N'E', N'Trabzon, Akçaabat', N'05555678901')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (16, N'Ceren', N'Acar', CAST(N'2004-12-17' AS Date), N'K', N'Tekirdağ, Süleymanpaşa', N'05556789012')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (17, N'Berkay', N'Demirtaş', CAST(N'2005-01-12' AS Date), N'E', N'Eskişehir, Odunpazarı', N'05557890123')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (18, N'Melis', N'Kavak', CAST(N'2004-04-25' AS Date), N'K', N'Bolu, Merkez', N'05558901234')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (19, N'Alihan', N'Yalçın', CAST(N'2005-07-07' AS Date), N'E', N'Bursa, Yıldırım', N'05559012345')
+INSERT [dbo].[ogrenciler] ([ogrenci_id], [ad], [soyad], [dogum_tarihi], [cinsiyet], [adres], [telefon]) VALUES (20, N'Pelin', N'Şahin', CAST(N'2006-12-05' AS Date), N'K', N'Aksaray, Merkez', N'05550123456')
+SET IDENTITY_INSERT [dbo].[ogrenciler] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ogretmenler] ON 
+
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (1, N'Ali', N'Çelik', N'Matematik', CAST(N'1980-10-12' AS Date), N'05331234567')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (2, N'Fatma', N'Yılmaz', N'Türkçe', CAST(N'1985-04-05' AS Date), N'05332345678')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (3, N'Murat', N'Aydın', N'Fen Bilgisi', CAST(N'1978-06-19' AS Date), N'05333456789')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (4, N'Emine', N'Özdemir', N'Sosyal Bilgiler', CAST(N'1982-11-22' AS Date), N'05334567890')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (5, N'Can', N'Demir', N'Beden Eğitimi', CAST(N'1987-01-30' AS Date), N'05335678901')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (6, N'Zeynep', N'Güler', N'Kimya', CAST(N'1984-03-17' AS Date), N'05336789012')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (7, N'Burak', N'Kara', N'Fizik', CAST(N'1983-07-21' AS Date), N'05337890123')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (8, N'Seda', N'Kılıç', N'Coğrafya', CAST(N'1986-09-08' AS Date), N'05338901234')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (9, N'Veli', N'Baysal', N'Müzik', CAST(N'1979-02-11' AS Date), N'05339012345')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (10, N'Elif', N'Aslan', N'Resim', CAST(N'1990-04-20' AS Date), N'05330123456')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (11, N'Gökhan', N'Özkan', N'Matematik', CAST(N'1980-09-10' AS Date), N'05331234568')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (12, N'Ayla', N'Karakış', N'Kimya', CAST(N'1984-01-25' AS Date), N'05332345679')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (13, N'Ali', N'Aslan', N'Beden Eğitimi', CAST(N'1986-07-14' AS Date), N'05333456790')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (14, N'Gül', N'Kara', N'Türkçe', CAST(N'1982-10-22' AS Date), N'05334567891')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (15, N'Metin', N'Güçlü', N'Coğrafya', CAST(N'1987-03-04' AS Date), N'05335678902')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (16, N'İsmail', N'Erdem', N'Fen Bilgisi', CAST(N'1983-08-18' AS Date), N'05336789013')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (17, N'Ebru', N'Vural', N'Müzik', CAST(N'1980-05-02' AS Date), N'05337890124')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (18, N'Sinan', N'Çakır', N'Sosyal Bilgiler', CAST(N'1985-09-12' AS Date), N'05338901235')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (19, N'Cem', N'Akın', N'Resim', CAST(N'1981-11-11' AS Date), N'05339012346')
+INSERT [dbo].[ogretmenler] ([ogretmen_id], [ad], [soyad], [bolum], [dogum_tarihi], [telefon]) VALUES (20, N'Büşra', N'Alkan', N'Fizik', CAST(N'1984-03-30' AS Date), N'05330123457')
+SET IDENTITY_INSERT [dbo].[ogretmenler] OFF
+GO
+SET IDENTITY_INSERT [dbo].[sinav_sonuclari] ON 
+
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (1, 1, 85)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (2, 2, 90)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (3, 3, 75)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (4, 4, 80)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (5, 5, 88)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (6, 6, 92)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (7, 7, 78)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (8, 8, 85)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (9, 9, 95)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (10, 10, 89)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (11, 1, 88)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (12, 2, 94)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (13, 3, 76)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (14, 4, 82)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (15, 5, 90)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (16, 6, 85)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (17, 7, 78)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (18, 8, 91)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (19, 9, 87)
+INSERT [dbo].[sinav_sonuclari] ([ogrenci_id], [sinav_id], [puan]) VALUES (20, 10, 93)
+SET IDENTITY_INSERT [dbo].[sinav_sonuclari] OFF
+GO
+SET IDENTITY_INSERT [dbo].[sinavlar] ON 
+
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (1, N'Matematik Vize', 1, CAST(N'2025-11-01T09:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (2, N'Türkçe Final', 2, CAST(N'2025-12-05T10:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (3, N'Fen Bilgisi Vize', 3, CAST(N'2025-11-15T08:30:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (4, N'Sosyal Bilgiler Final', 4, CAST(N'2025-12-10T14:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (5, N'Beden Eğitimi Vize', 5, CAST(N'2025-11-20T11:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (6, N'Kimya Final', 6, CAST(N'2025-12-15T13:30:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (7, N'Fizik Vize', 7, CAST(N'2025-11-25T09:45:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (8, N'Coğrafya Final', 8, CAST(N'2025-12-20T15:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (9, N'Müzik Vize', 9, CAST(N'2025-11-30T12:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (10, N'Resim Final', 10, CAST(N'2025-12-25T16:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (11, N'Edebiyat Vize', 4, CAST(N'2025-11-12T09:30:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (12, N'Biyoloji Final', 2, CAST(N'2025-12-01T14:30:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (13, N'Tarih Vize', 9, CAST(N'2025-11-18T08:45:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (14, N'Araba Kullanma Final', 5, CAST(N'2025-12-05T11:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (15, N'Drama Vize', 8, CAST(N'2025-11-25T13:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (16, N'Astronomi Final', 10, CAST(N'2025-12-10T16:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (17, N'Felsefe Vize', 6, CAST(N'2025-11-21T10:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (18, N'Geometri Final', 1, CAST(N'2025-12-07T15:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (19, N'Kimya Deneyleri Vize', 2, CAST(N'2025-11-20T09:00:00.000' AS DateTime))
+INSERT [dbo].[sinavlar] ([sinav_id], [sinav_adi], [ders_id], [sinav_tarihi]) VALUES (20, N'Bilgisayar Bilimleri Final', 7, CAST(N'2025-12-15T17:00:00.000' AS DateTime))
+SET IDENTITY_INSERT [dbo].[sinavlar] OFF
+GO
+SET IDENTITY_INSERT [dbo].[siniflar] ON 
+
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (1, N'9-A', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (2, N'9-B', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (3, N'10-A', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (4, N'10-B', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (5, N'11-A', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (6, N'11-B', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (7, N'12-A', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (8, N'12-B', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (9, N'10-C', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (10, N'11-C', 30)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (11, N'9-C', 28)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (12, N'10-C', 28)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (13, N'11-C', 28)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (14, N'12-C', 28)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (15, N'9-D', 28)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (16, N'10-D', 28)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (17, N'11-D', 28)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (18, N'12-D', 28)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (19, N'9-E', 28)
+INSERT [dbo].[siniflar] ([sinif_id], [sinif_adi], [kapasite]) VALUES (20, N'10-E', 28)
+SET IDENTITY_INSERT [dbo].[siniflar] OFF
+GO
+ALTER TABLE [dbo].[dersler]  WITH CHECK ADD  CONSTRAINT [FK_ogretmen_ders] FOREIGN KEY([ogretmen_id])
+REFERENCES [dbo].[ogretmenler] ([ogretmen_id])
+GO
+ALTER TABLE [dbo].[dersler] CHECK CONSTRAINT [FK_ogretmen_ders]
+GO
+ALTER TABLE [dbo].[ogrenci_ders]  WITH CHECK ADD  CONSTRAINT [FK_ders] FOREIGN KEY([ders_id])
+REFERENCES [dbo].[dersler] ([ders_id])
+GO
+ALTER TABLE [dbo].[ogrenci_ders] CHECK CONSTRAINT [FK_ders]
+GO
+ALTER TABLE [dbo].[ogrenci_ders]  WITH CHECK ADD  CONSTRAINT [FK_ogrenci] FOREIGN KEY([ogrenci_id])
+REFERENCES [dbo].[ogrenciler] ([ogrenci_id])
+GO
+ALTER TABLE [dbo].[ogrenci_ders] CHECK CONSTRAINT [FK_ogrenci]
+GO
+ALTER TABLE [dbo].[ogrenci_klup]  WITH CHECK ADD FOREIGN KEY([ogrenci_id])
+REFERENCES [dbo].[ogrenciler] ([ogrenci_id])
+GO
+ALTER TABLE [dbo].[ogrenci_klup]  WITH CHECK ADD FOREIGN KEY([ogrenci_id])
+REFERENCES [dbo].[ogrenciler] ([ogrenci_id])
+GO
+ALTER TABLE [dbo].[ogrenci_sinif]  WITH CHECK ADD FOREIGN KEY([ogrenci_id])
+REFERENCES [dbo].[ogrenciler] ([ogrenci_id])
+GO
+ALTER TABLE [dbo].[ogrenci_sinif]  WITH CHECK ADD FOREIGN KEY([ogrenci_id])
+REFERENCES [dbo].[ogrenciler] ([ogrenci_id])
+GO
+ALTER TABLE [dbo].[ogrenci_sinif]  WITH CHECK ADD FOREIGN KEY([sinif_id])
+REFERENCES [dbo].[siniflar] ([sinif_id])
+GO
+ALTER TABLE [dbo].[ogrenci_sinif]  WITH CHECK ADD FOREIGN KEY([sinif_id])
+REFERENCES [dbo].[siniflar] ([sinif_id])
+GO
+ALTER TABLE [dbo].[sinav_sonuclari]  WITH CHECK ADD FOREIGN KEY([ogrenci_id])
+REFERENCES [dbo].[ogrenciler] ([ogrenci_id])
+GO
+ALTER TABLE [dbo].[sinav_sonuclari]  WITH CHECK ADD FOREIGN KEY([ogrenci_id])
+REFERENCES [dbo].[ogrenciler] ([ogrenci_id])
+GO
+ALTER TABLE [dbo].[sinav_sonuclari]  WITH CHECK ADD FOREIGN KEY([sinav_id])
+REFERENCES [dbo].[sinavlar] ([sinav_id])
+GO
+ALTER TABLE [dbo].[sinav_sonuclari]  WITH CHECK ADD FOREIGN KEY([sinav_id])
+REFERENCES [dbo].[sinavlar] ([sinav_id])
+GO
+ALTER TABLE [dbo].[sinavlar]  WITH CHECK ADD  CONSTRAINT [FK_ders_sinav] FOREIGN KEY([ders_id])
+REFERENCES [dbo].[dersler] ([ders_id])
+GO
+ALTER TABLE [dbo].[sinavlar] CHECK CONSTRAINT [FK_ders_sinav]
+GO
+USE [master]
+GO
+ALTER DATABASE [okul_sistemi] SET  READ_WRITE 
+GO
