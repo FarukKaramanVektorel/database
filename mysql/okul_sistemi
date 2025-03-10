@@ -1,0 +1,301 @@
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+--
+-- Host: localhost    Database: okul_sistemi
+-- ------------------------------------------------------
+-- Server version	8.0.40
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `dersler`
+--
+
+DROP TABLE IF EXISTS `dersler`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dersler` (
+  `ders_id` int NOT NULL AUTO_INCREMENT,
+  `ders_adi` varchar(100) DEFAULT NULL,
+  `ogretmen_id` int DEFAULT NULL,
+  PRIMARY KEY (`ders_id`),
+  KEY `FK_ogretmen_ders` (`ogretmen_id`),
+  CONSTRAINT `FK_ogretmen_ders` FOREIGN KEY (`ogretmen_id`) REFERENCES `ogretmenler` (`ogretmen_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dersler`
+--
+
+LOCK TABLES `dersler` WRITE;
+/*!40000 ALTER TABLE `dersler` DISABLE KEYS */;
+INSERT INTO `dersler` VALUES (1,'Matematik',1),(2,'Türkçe',2),(3,'Fen Bilgisi',3),(4,'Sosyal Bilgiler',4),(5,'Beden Eğitimi',5);
+/*!40000 ALTER TABLE `dersler` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `klup`
+--
+
+DROP TABLE IF EXISTS `klup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `klup` (
+  `klup_id` int NOT NULL AUTO_INCREMENT,
+  `klup_adi` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`klup_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `klup`
+--
+
+LOCK TABLES `klup` WRITE;
+/*!40000 ALTER TABLE `klup` DISABLE KEYS */;
+INSERT INTO `klup` VALUES (1,'Satranç'),(2,'Futbol'),(3,'Basketbol'),(4,'Voleybol'),(5,'Tiyatro');
+/*!40000 ALTER TABLE `klup` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ogrenci_ders`
+--
+
+DROP TABLE IF EXISTS `ogrenci_ders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ogrenci_ders` (
+  `ogrenci_id` int NOT NULL,
+  `ders_id` int NOT NULL,
+  `yil` int DEFAULT NULL,
+  `donem` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`ogrenci_id`,`ders_id`),
+  KEY `FK_ders` (`ders_id`),
+  CONSTRAINT `FK_ders` FOREIGN KEY (`ders_id`) REFERENCES `dersler` (`ders_id`),
+  CONSTRAINT `FK_ogrenci` FOREIGN KEY (`ogrenci_id`) REFERENCES `ogrenciler` (`ogrenci_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ogrenci_ders`
+--
+
+LOCK TABLES `ogrenci_ders` WRITE;
+/*!40000 ALTER TABLE `ogrenci_ders` DISABLE KEYS */;
+INSERT INTO `ogrenci_ders` VALUES (1,1,2025,'Güz'),(2,2,2025,'Güz'),(3,3,2025,'Bahar'),(4,4,2025,'Bahar'),(5,5,2025,'Güz');
+/*!40000 ALTER TABLE `ogrenci_ders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ogrenci_klup`
+--
+
+DROP TABLE IF EXISTS `ogrenci_klup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ogrenci_klup` (
+  `ogrenci_id` int NOT NULL AUTO_INCREMENT,
+  `klup_id` int DEFAULT NULL,
+  `katilim_tarihi` date DEFAULT NULL,
+  PRIMARY KEY (`ogrenci_id`),
+  KEY `FK_klup` (`klup_id`),
+  CONSTRAINT `FK_klup` FOREIGN KEY (`klup_id`) REFERENCES `klup` (`klup_id`),
+  CONSTRAINT `FK_ogrenci_klup` FOREIGN KEY (`ogrenci_id`) REFERENCES `ogrenciler` (`ogrenci_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ogrenci_klup`
+--
+
+LOCK TABLES `ogrenci_klup` WRITE;
+/*!40000 ALTER TABLE `ogrenci_klup` DISABLE KEYS */;
+INSERT INTO `ogrenci_klup` VALUES (1,1,'2024-10-01'),(2,2,'2024-09-15'),(3,3,'2024-10-10'),(4,4,'2024-08-20'),(5,5,'2024-09-05');
+/*!40000 ALTER TABLE `ogrenci_klup` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ogrenci_sinif`
+--
+
+DROP TABLE IF EXISTS `ogrenci_sinif`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ogrenci_sinif` (
+  `ogrenci_id` int NOT NULL AUTO_INCREMENT,
+  `sinif_id` int DEFAULT NULL,
+  `yil` int DEFAULT NULL,
+  PRIMARY KEY (`ogrenci_id`),
+  KEY `FK_sinif` (`sinif_id`),
+  CONSTRAINT `FK_ogrenci_sinif` FOREIGN KEY (`ogrenci_id`) REFERENCES `ogrenciler` (`ogrenci_id`),
+  CONSTRAINT `FK_sinif` FOREIGN KEY (`sinif_id`) REFERENCES `siniflar` (`sinif_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ogrenci_sinif`
+--
+
+LOCK TABLES `ogrenci_sinif` WRITE;
+/*!40000 ALTER TABLE `ogrenci_sinif` DISABLE KEYS */;
+INSERT INTO `ogrenci_sinif` VALUES (1,1,2025),(2,2,2025),(3,3,2025),(4,4,2025),(5,5,2025);
+/*!40000 ALTER TABLE `ogrenci_sinif` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ogrenciler`
+--
+
+DROP TABLE IF EXISTS `ogrenciler`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ogrenciler` (
+  `ogrenci_id` int NOT NULL AUTO_INCREMENT,
+  `ad` varchar(100) DEFAULT NULL,
+  `soyad` varchar(100) DEFAULT NULL,
+  `dogum_tarihi` date DEFAULT NULL,
+  `cinsiyet` char(1) DEFAULT NULL,
+  `adres` varchar(255) DEFAULT NULL,
+  `telefon` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`ogrenci_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ogrenciler`
+--
+
+LOCK TABLES `ogrenciler` WRITE;
+/*!40000 ALTER TABLE `ogrenciler` DISABLE KEYS */;
+INSERT INTO `ogrenciler` VALUES (1,'Ahmet','Yılmaz','2005-05-15','E','İstanbul, Şişli','05551234567'),(2,'Ayşe','Kara','2004-03-22','K','Ankara, Çankaya','05552345678'),(3,'Mehmet','Demir','2005-07-10','E','İzmir, Karşıyaka','05553456789'),(4,'Elif','Güzel','2006-01-25','K','Bursa, Osmangazi','05554567890'),(5,'Murat','Çelik','2004-12-05','E','Adana, Seyhan','05555678901');
+/*!40000 ALTER TABLE `ogrenciler` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ogretmenler`
+--
+
+DROP TABLE IF EXISTS `ogretmenler`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ogretmenler` (
+  `ogretmen_id` int NOT NULL AUTO_INCREMENT,
+  `ad` varchar(100) DEFAULT NULL,
+  `soyad` varchar(100) DEFAULT NULL,
+  `bolum` varchar(100) DEFAULT NULL,
+  `dogum_tarihi` date DEFAULT NULL,
+  `telefon` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`ogretmen_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ogretmenler`
+--
+
+LOCK TABLES `ogretmenler` WRITE;
+/*!40000 ALTER TABLE `ogretmenler` DISABLE KEYS */;
+INSERT INTO `ogretmenler` VALUES (1,'Ali','Çelik','Matematik','1980-10-12','05331234567'),(2,'Fatma','Yılmaz','Türkçe','1985-04-05','05332345678'),(3,'Murat','Aydın','Fen Bilgisi','1978-06-19','05333456789'),(4,'Emine','Özdemir','Sosyal Bilgiler','1982-11-22','05334567890'),(5,'Can','Demir','Beden Eğitimi','1987-01-30','05335678901');
+/*!40000 ALTER TABLE `ogretmenler` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sinav_sonuclari`
+--
+
+DROP TABLE IF EXISTS `sinav_sonuclari`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sinav_sonuclari` (
+  `ogrenci_id` int NOT NULL,
+  `sinav_id` int NOT NULL,
+  `puan` int DEFAULT NULL,
+  PRIMARY KEY (`ogrenci_id`,`sinav_id`),
+  KEY `FK_sinav_sonuclari_sinav` (`sinav_id`),
+  CONSTRAINT `FK_sinav_sonuclari_ogrenci` FOREIGN KEY (`ogrenci_id`) REFERENCES `ogrenciler` (`ogrenci_id`),
+  CONSTRAINT `FK_sinav_sonuclari_sinav` FOREIGN KEY (`sinav_id`) REFERENCES `sinavlar` (`sinav_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sinav_sonuclari`
+--
+
+LOCK TABLES `sinav_sonuclari` WRITE;
+/*!40000 ALTER TABLE `sinav_sonuclari` DISABLE KEYS */;
+INSERT INTO `sinav_sonuclari` VALUES (1,1,85),(2,2,90),(3,3,75),(4,4,80),(5,5,88);
+/*!40000 ALTER TABLE `sinav_sonuclari` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sinavlar`
+--
+
+DROP TABLE IF EXISTS `sinavlar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sinavlar` (
+  `sinav_id` int NOT NULL AUTO_INCREMENT,
+  `sinav_adi` varchar(100) DEFAULT NULL,
+  `ders_id` int DEFAULT NULL,
+  `sinav_tarihi` datetime DEFAULT NULL,
+  PRIMARY KEY (`sinav_id`),
+  KEY `FK_ders_sinav` (`ders_id`),
+  CONSTRAINT `FK_ders_sinav` FOREIGN KEY (`ders_id`) REFERENCES `dersler` (`ders_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sinavlar`
+--
+
+LOCK TABLES `sinavlar` WRITE;
+/*!40000 ALTER TABLE `sinavlar` DISABLE KEYS */;
+INSERT INTO `sinavlar` VALUES (1,'Matematik Vize',1,'2025-11-01 09:00:00'),(2,'Türkçe Final',2,'2025-12-05 10:00:00'),(3,'Fen Bilgisi Vize',3,'2025-11-15 08:30:00'),(4,'Sosyal Bilgiler Final',4,'2025-12-10 14:00:00'),(5,'Beden Eğitimi Vize',5,'2025-11-20 11:00:00');
+/*!40000 ALTER TABLE `sinavlar` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `siniflar`
+--
+
+DROP TABLE IF EXISTS `siniflar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `siniflar` (
+  `sinif_id` int NOT NULL AUTO_INCREMENT,
+  `sinif_adi` varchar(50) DEFAULT NULL,
+  `kapasite` int DEFAULT NULL,
+  PRIMARY KEY (`sinif_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `siniflar`
+--
+
+LOCK TABLES `siniflar` WRITE;
+/*!40000 ALTER TABLE `siniflar` DISABLE KEYS */;
+INSERT INTO `siniflar` VALUES (1,'9-A',30),(2,'9-B',30),(3,'10-A',30),(4,'10-B',30),(5,'11-A',30);
+/*!40000 ALTER TABLE `siniflar` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-03-10 15:56:55
